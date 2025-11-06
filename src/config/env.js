@@ -4,10 +4,22 @@ const envFiles = [`.env.${process.env.NODE_ENV}`, '.env.local', '.env'];
 
 envFiles.forEach((file) => dotenv.config({ path: file, override: false }));
 
+const parseOrigins = (value) => {
+  if (!value) return ['*'];
+  return value
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+};
+
 export const appConfig = {
   env: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT) || 4000,
-  apiPrefix: process.env.API_PREFIX || '/api/v1'
+  apiPrefix: process.env.API_PREFIX || '/api/v1',
+  cors: {
+    allowedOrigins: parseOrigins(process.env.CORS_ALLOWED_ORIGINS),
+    allowCredentials: process.env.CORS_ALLOW_CREDENTIALS === 'true'
+  }
 };
 
 export const databaseConfig = {

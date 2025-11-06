@@ -99,29 +99,27 @@ Relaciones destacadas:
 
 ## Configuración
 
-Variables de entorno sugeridas (`.env`):
+### Variables de entorno
 
-```
-NODE_ENV=development
-PORT=4000
-API_PREFIX=/api/v1
-DATABASE_URL=postgres://usuario:password@host.neon.tech/db?sslmode=require
-DB_LOGGING=false
-DB_SSL=true
-JWT_SECRET=cambia-esto
-JWT_EXPIRES_IN=2h
-PAYMENT_GATEWAY_URL=
-NEON_ALERT_WINDOW_DAYS=5
-LOYALTY_EARN_RATE=0.05
-LOYALTY_REDEEM_RATE=100
-```
+1. Copia `.env.example` a `.env` y completa los valores según tu entorno.
+2. Reemplaza las credenciales de Neon en `DATABASE_URL` (incluye `sslmode=require`).
+3. Ajusta los orígenes permitidos para el frontend en `CORS_ALLOWED_ORIGINS` (por ejemplo `http://localhost:3000,http://localhost:5173`).
+4. Define `JWT_SECRET`, las credenciales OAuth (`GOOGLE_*`) si las usarás y el endpoint de pasarela en `PAYMENT_GATEWAY_URL`.
+
+El archivo de ejemplo incluye los parámetros de pool de conexión, configuración de lealtad y banderas de CORS. Habilita cookies cruzadas fijando `CORS_ALLOW_CREDENTIALS=true` cuando sea necesario.
 
 ### Conexión a Neon
 
 1. Crear base en [Neon](https://neon.tech) y obtener la cadena `postgres://` con SSL habilitado.
-2. Asignar la cadena a `DATABASE_URL`.
+2. Asignar la cadena a `DATABASE_URL` dentro del `.env`.
 3. Neon requiere SSL, por lo que `DB_SSL` debe permanecer en `true` (por defecto).
 4. Habilitar la extensión `pgcrypto` (o `uuid-ossp`) para soportar generación de UUIDs en tareas de agregación.
+
+## Documentación de la API
+
+- Swagger UI disponible en `http://localhost:4000/docs` (ajusta el puerto según tu `.env`).
+- El esquema OpenAPI puede descargarse desde `http://localhost:4000/docs.json` y consumirse en Postman, Hoppscotch u otros clientes.
+- Cada endpoint protegido requiere el encabezado `Authorization: Bearer <token>` obtenido desde `POST /api/v1/auth/login`.
 
 ### Scripts npm relevantes
 
